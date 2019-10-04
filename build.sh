@@ -226,10 +226,11 @@ if [ -f $CUR_DIR/patches.txt ]; then
                 local_apply_patch ${patchdata[1]} ${patchdata[2]}
                 ;;
             [0-9]*)
-                gerrit_apply_change $line
+                IFS=' ' read -a patchdata -d "#" <<< "$line"
+                gerrit_apply_change ${patchdata[0]}
                 ;;
             topic*)
-                IFS=' ' read -a patchdata <<< "$line"
+                IFS=' ' read -a patchdata -d "#" <<< "$line"
                 gerrit_apply_topic ${patchdata[1]}
                 ;;
             sync)
